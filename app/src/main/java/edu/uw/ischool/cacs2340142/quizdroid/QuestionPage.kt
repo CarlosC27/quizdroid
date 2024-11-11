@@ -2,6 +2,7 @@ package edu.uw.ischool.cacs2340142.quizdroid
 
 import android.os.Bundle
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -35,6 +36,7 @@ class QuestionPage : Fragment() {
         val questionNumberTracker: TextView = view.findViewById(R.id.questionNumberTracker)
         val answerOptionsGroup: RadioGroup = view.findViewById(R.id.answerOptions)
         val submitButton: Button = view.findViewById(R.id.submitButton)
+        val backButton: Button = view.findViewById(R.id.backButtonQuestionPage)
 
         val question = quizViewModel.getCurrentQuestion()
         questionText.text = question?.questionDes
@@ -57,7 +59,36 @@ class QuestionPage : Fragment() {
             parentFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, AnswerPage()).addToBackStack(null).commit()
         }
 
+        backButton.setOnClickListener {
+            if (quizViewModel.isFirstQuestion()) {
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView, Homepage())
+                    .addToBackStack(null)
+                    .commit()
+            } else {
+                quizViewModel.goBackQuestion()
+                updateQuestionUI(view)
+            }
+        }
     }
+
+    private fun updateQuestionUI(view: View) {
+        val questionTextView: TextView? = view.findViewById(R.id.currentQuestion)
+        val questionNumberTrackerView: TextView? = view.findViewById(R.id.questionNumberTracker)
+        val correctAnswerTrackerView: TextView? = view.findViewById(R.id.correctAnswerTracker)
+        val answerOptionsGroup: RadioGroup = view.findViewById(R.id.answerOptions)
+        val currentQuestion = quizViewModel.currentTopic?.questions?.getOrNull(quizViewModel.currentQuestion)
+        questionTextView?.text = currentQuestion?.questionDes ?: ""
+        questionNumberTrackerView?.text = "Question ${quizViewModel.currentQuestion + 1} / ${quizViewModel.currentTopic?.numberOfQuestions}"
+        correctAnswerTrackerView?.text = "${quizViewModel.correctAnswers} / ${quizViewModel.currentTopic?.numberOfQuestions} Questions Correct"
+        answerOptionsGroup.clearCheck()
+        currentQuestion?.questionOptions?.forEachIndexed { index, option ->
+            val radioButton = answerOptionsGroup.getChildAt(index) as? RadioButton
+            radioButton?.text = option
+        }
+    }
+
+
 
     companion object {
 

@@ -132,6 +132,22 @@ class QuizModel : ViewModel(){
         return null
     }
 
+    fun goBackQuestion() {
+        if (currentQuestion > 0) {
+
+            val currentQuestionObj = currentTopic?.questions?.get(currentQuestion)
+            if (currentQuestionObj != null && myAnswer == currentQuestionObj.answer) {
+                correctAnswers = maxOf(0, correctAnswers - 1)
+                myAnswer = null
+            }
+            currentQuestion -= 1
+        }
+    }
 
 
+
+
+    fun isFirstQuestion(): Boolean {
+        return currentQuestion == 0
+    }
 }

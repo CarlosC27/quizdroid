@@ -19,9 +19,6 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-//        if(savedInstanceState == null){
-//            supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, Homepage())
-//        }
 
         val quizViewModel : QuizModel by viewModels()
 

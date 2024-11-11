@@ -22,53 +22,60 @@
         android:textSize="48dp"
         android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/btnMath"
-        android:layout_width="325dp"
+    <LinearLayout
+        android:id="@+id/buttonContainer"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:backgroundTint="#9c89b8"
-        android:text="Math"
-        android:textSize="28sp" />
+        android:orientation="vertical"
+        android:padding="16dp" />
 
-    <Button
-        android:id="@+id/btnPhysics"
-        android:layout_width="325dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="8dp"
-        android:backgroundTint="#9c89b8"
-        android:text="Physics"
-        android:textSize="28sp" />
+<!--    <Button-->
+<!--        android:id="@+id/btnMath"-->
+<!--        android:layout_width="325dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:backgroundTint="#9c89b8"-->
+<!--        android:text="Math"-->
+<!--        android:textSize="28sp" />-->
 
-    <Button
-        android:id="@+id/btnMarvelSuperheroes"
-        android:layout_width="325dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="8dp"
-        android:backgroundTint="#9c89b8"
-        android:text="Marvel Superheroes"
-        android:textSize="28sp" />
+<!--    <Button-->
+<!--        android:id="@+id/btnPhysics"-->
+<!--        android:layout_width="325dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:backgroundTint="#9c89b8"-->
+<!--        android:text="Physics"-->
+<!--        android:textSize="28sp" />-->
 
-    <Button
-        android:id="@+id/btnTaylorSwift"
-        android:layout_width="325dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="8dp"
-        android:backgroundTint="#9c89b8"
-        android:text="Taylor Swift"
-        android:textSize="28sp" />
+<!--    <Button-->
+<!--        android:id="@+id/btnMarvelSuperheroes"-->
+<!--        android:layout_width="325dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:backgroundTint="#9c89b8"-->
+<!--        android:text="Marvel Superheroes"-->
+<!--        android:textSize="28sp" />-->
 
-    <Button
-        android:id="@+id/btnPokemon"
-        android:layout_width="325dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="8dp"
-        android:backgroundTint="#9c89b8"
-        android:text="Pokemon"
-        android:textSize="28sp" />
+<!--    <Button-->
+<!--        android:id="@+id/btnTaylorSwift"-->
+<!--        android:layout_width="325dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:backgroundTint="#9c89b8"-->
+<!--        android:text="Taylor Swift"-->
+<!--        android:textSize="28sp" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/btnPokemon"-->
+<!--        android:layout_width="325dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:backgroundTint="#9c89b8"-->
+<!--        android:text="Pokemon"-->
+<!--        android:textSize="28sp" />-->
 
 </LinearLayout>

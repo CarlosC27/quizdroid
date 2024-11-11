@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.*
 import  androidx.fragment.*
 import androidx.fragment.app.activityViewModels
-import edu.uw.ischool.cacs2340142.quizdroid.QuizModel
 
 class TopicOverveiwPage : Fragment() {
 
@@ -31,7 +30,7 @@ class TopicOverveiwPage : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val backButton: Button = view.findViewById(R.id.backButton)
+        val backButton: Button = view.findViewById(R.id.backButtonQuestionPage)
         val startButton: Button = view.findViewById(R.id.startButton)
         val topicTitle: TextView = view.findViewById(R.id.topicTitle)
         val topicDescription: TextView = view.findViewById(R.id.topicDescription)
