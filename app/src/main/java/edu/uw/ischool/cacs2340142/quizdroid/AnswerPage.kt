@@ -14,17 +14,14 @@ import edu.uw.ischool.cacs2340142.quizdroid.QuizModel
 
 class AnswerPage : Fragment() {
 
-    private val quizViewModel: QuizModel by activityViewModels()
+    private val quizViewModel: QuizModel
+        get() = (requireActivity().application as QuizApp).quizViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_answer_page, container, false)
     }
 
@@ -38,30 +35,31 @@ class AnswerPage : Fragment() {
         val nextButton: Button = view.findViewById(R.id.nextQuestion)
         val questionNumberTracker: TextView = view.findViewById(R.id.questionNumberTracker)
 
-        questionNumberTracker.text = "Question ${quizViewModel.currentQuestion + 1} of ${quizViewModel.totalQuestions}"
-
-
         val currentQuestion = quizViewModel.getCurrentQuestion()
-        questionText.text = currentQuestion?.questionDes
-        correctAnswerText.text = "Correct answer: ${currentQuestion?.answer}"
-        myAnswerText.text = "Your Answer: ${quizViewModel.myAnswer}"
-        correctAnswerTracker.text = "Correct Answers: ${quizViewModel.correctAnswers} out of ${quizViewModel.totalQuestions}"
+        questionText.text = currentQuestion?.questionText
+        correctAnswerText.text = "Correct answer: ${currentQuestion?.correctAnswer}"
+        myAnswerText.text = "Your answer: ${quizViewModel.myAnswer}"
+        correctAnswerTracker.text = "Correct answers: ${quizViewModel.correctAnswers} out of ${quizViewModel.totalQuestions}"
+        questionNumberTracker.text = "Question ${quizViewModel.currentQuestionIndex + 1} of ${quizViewModel.totalQuestions}"
 
         nextButton.text = if (quizViewModel.isLastQuestion()) "Finish" else "Next"
-        nextButton.setOnClickListener{
-            if(quizViewModel.isLastQuestion()){
-                parentFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, Homepage()).commit()
-            }else{
+        nextButton.setOnClickListener {
+            if (quizViewModel.isLastQuestion()) {
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView, Homepage())
+                    .commit()
+            } else {
                 quizViewModel.moveToNextQuestion()
-                parentFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, QuestionPage()).commit()
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView, QuestionPage())
+                    .addToBackStack(null)
+                    .commit()
             }
         }
     }
 
     companion object {
         @JvmStatic
-        fun newInstance() =
-            AnswerPage().apply {
-            }
+        fun newInstance() = AnswerPage()
     }
 }

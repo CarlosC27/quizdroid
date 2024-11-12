@@ -1,20 +1,17 @@
 package edu.uw.ischool.cacs2340142.quizdroid
 
 import android.app.Application
+import android.content.SharedPreferences
 import android.util.*
+import androidx.preference.PreferenceManager
 
-class QuizApp: Application() {
-    val TAG =QuizApp::class.java.canonicalName
-    lateinit var topicRepository: TopicRepository
+class QuizApp : Application() {
+    lateinit var topicRepository: TopicRepositoryHC
+    lateinit var quizViewModel: QuizModel
 
     override fun onCreate() {
         super.onCreate()
-        topicRepository = TopicRepositoryHC()
-        Log.i(TAG, "Application created")
-    }
-
-    override fun onTerminate() {
-        super.onTerminate()
-        Log.i(TAG, "Application is burning down")
+        topicRepository = TopicRepositoryHC(this)
+        quizViewModel = QuizModel(topicRepository)
     }
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference
+        android:key="json_url"
+        android:title="URL for JSON Data"
+        android:summary="URL to download JSON question data"
+        android:defaultValue="https://drive.google.com/file/d/1xJ_2sTjX5KYFg6KCUML0y8dJdWzj3AA0/view"
+        android:inputType="textUri" />
+
+    <EditTextPreference
+        android:key="download_interval"
+        android:title="Download Interval (minutes)"
+        android:summary="Enter the frequency for checking new downloads in minutes"
+        android:inputType="number" />
+</PreferenceScreen>

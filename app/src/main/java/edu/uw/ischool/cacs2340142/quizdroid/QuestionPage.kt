@@ -15,17 +15,14 @@ import edu.uw.ischool.cacs2340142.quizdroid.QuizModel
 
 class QuestionPage : Fragment() {
 
-    private val quizViewModel: QuizModel by activityViewModels()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private val quizViewModel: QuizModel
+        get() = (requireActivity().application as QuizApp).quizViewModel
 
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_question_page, container, false)
     }
 
@@ -38,63 +35,53 @@ class QuestionPage : Fragment() {
         val submitButton: Button = view.findViewById(R.id.submitButton)
         val backButton: Button = view.findViewById(R.id.backButtonQuestionPage)
 
-        val question = quizViewModel.getCurrentQuestion()
-        questionText.text = question?.questionDes
-        questionNumberTracker.text = "Question ${quizViewModel.currentQuestion + 1} of ${quizViewModel.totalQuestions}"
+        val currentQuestion = quizViewModel.getCurrentQuestion()
 
-        answerOptionsGroup.clearCheck()
+        questionText.text = currentQuestion?.questionText
+        questionNumberTracker.text = "Question ${quizViewModel.currentQuestionIndex + 1} of ${quizViewModel.totalQuestions}"
+
+        answerOptionsGroup.removeAllViews()
+        currentQuestion?.answers?.forEach { option ->
+            val radioButton = RadioButton(context).apply {
+                text = option
+            }
+            answerOptionsGroup.addView(radioButton)
+        }
+
         submitButton.isEnabled = false
-        question?.questionOptions?.forEachIndexed { index, questionOption ->
-            (answerOptionsGroup.getChildAt(index) as RadioButton).text = questionOption
+
+        answerOptionsGroup.setOnCheckedChangeListener { group, checkedId ->
+            if (checkedId != -1) {
+                submitButton.isEnabled = true
+            }
         }
 
-        answerOptionsGroup.setOnCheckedChangeListener { radioGroup, checkedAnswer ->
-            submitButton.isEnabled = true
-        }
-
-        submitButton.setOnClickListener{
+        submitButton.setOnClickListener {
             val selectedAnswerId = answerOptionsGroup.checkedRadioButtonId
             val selectedAnswer = view.findViewById<RadioButton>(selectedAnswerId).text.toString()
             quizViewModel.submitAnswer(selectedAnswer)
-            parentFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, AnswerPage()).addToBackStack(null).commit()
+
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainerView, AnswerPage())
+                .addToBackStack(null)
+                .commit()
         }
 
         backButton.setOnClickListener {
             if (quizViewModel.isFirstQuestion()) {
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainerView, Homepage())
-                    .addToBackStack(null)
-                    .commit()
+                parentFragmentManager.popBackStack()
             } else {
                 quizViewModel.goBackQuestion()
-                updateQuestionUI(view)
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView, QuestionPage())
+                    .addToBackStack(null)
+                    .commit()
             }
         }
     }
-
-    private fun updateQuestionUI(view: View) {
-        val questionTextView: TextView? = view.findViewById(R.id.currentQuestion)
-        val questionNumberTrackerView: TextView? = view.findViewById(R.id.questionNumberTracker)
-        val correctAnswerTrackerView: TextView? = view.findViewById(R.id.correctAnswerTracker)
-        val answerOptionsGroup: RadioGroup = view.findViewById(R.id.answerOptions)
-        val currentQuestion = quizViewModel.currentTopic?.questions?.getOrNull(quizViewModel.currentQuestion)
-        questionTextView?.text = currentQuestion?.questionDes ?: ""
-        questionNumberTrackerView?.text = "Question ${quizViewModel.currentQuestion + 1} / ${quizViewModel.currentTopic?.numberOfQuestions}"
-        correctAnswerTrackerView?.text = "${quizViewModel.correctAnswers} / ${quizViewModel.currentTopic?.numberOfQuestions} Questions Correct"
-        answerOptionsGroup.clearCheck()
-        currentQuestion?.questionOptions?.forEachIndexed { index, option ->
-            val radioButton = answerOptionsGroup.getChildAt(index) as? RadioButton
-            radioButton?.text = option
-        }
-    }
-
-
 
     companion object {
-
         @JvmStatic
-        fun newInstance() =
-            QuestionPage().apply {
-            }
+        fun newInstance() = QuestionPage()
     }
 }

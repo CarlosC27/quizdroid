@@ -12,10 +12,9 @@ import androidx.fragment.app.activityViewModels
 
 class Homepage : Fragment() {
 
-    private val quizViewModel: QuizModel by activityViewModels()
+    private val quizViewModel: QuizModel
+        get() = (requireActivity().application as QuizApp).quizViewModel
 
-    private val topicRepository: TopicRepository
-        get() = (requireActivity().application as QuizApp).topicRepository
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,26 +27,27 @@ class Homepage : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val buttonContainer = view.findViewById<LinearLayout>(R.id.buttonContainer)
+        buttonContainer.removeAllViews()
 
-        val topics = topicRepository.getTopics()
+        val topics = quizViewModel.topicRepository.getTopics()
         for (topic in topics) {
-            val topicButton = Button(ContextThemeWrapper(requireContext(), R.style.QuizButtonStyle))
-            topicButton.text = topic.topicTitle
-            topicButton.setOnClickListener {
-                goToTopic(topic.topicTitle)
+            val topicButton = Button(requireContext()).apply {
+                text = topic.topicTitle
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+                setOnClickListener {
+                    navigateToTopicOverview(topic.topicTitle)
+                }
             }
             buttonContainer.addView(topicButton)
         }
     }
-
-    private fun goToTopic(topicName: String) {
-        val fragment = TopicOverveiwPage().apply {
-            arguments = Bundle().apply {
-                putString("topicName", topicName)
-            }
-        }
+    private fun navigateToTopicOverview(topicTitle: String) {
+        quizViewModel.setTopic(topicTitle)
         parentFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainerView, fragment)
+            .replace(R.id.fragmentContainerView, TopicOverviewPage())
             .addToBackStack(null)
             .commit()
     }
